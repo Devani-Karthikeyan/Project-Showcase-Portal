@@ -12,7 +12,7 @@ import { initializeEventHandlers } from './services/notificationService.js';
 // Route imports
 import authRoutes from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
-
+import metadataRoutes from './routes/metadataRoutes.js';
 
 
 // Setup environment variables
@@ -56,7 +56,7 @@ app.use('/uploads', express.static(uploadsFolder));
 // Route bindings
 app.use('/api/auth', authRoutes);
 app.use('/api/notifications', notificationRoutes);
-
+app.use('/api/metadata', metadataRoutes);
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date() });
