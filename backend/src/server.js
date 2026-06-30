@@ -11,6 +11,7 @@ import { initializeEventHandlers } from './services/notificationService.js';
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
@@ -58,6 +59,7 @@ app.use('/uploads', express.static(uploadsFolder));
 // Route bindings
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/metadata', metadataRoutes);
