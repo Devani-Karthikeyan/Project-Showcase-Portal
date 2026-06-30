@@ -11,6 +11,9 @@ import Explore from './pages/Explore';
 import Login from './pages/Login';
 import ProjectDetails from './pages/ProjectDetails';
 import ProjectForm from './pages/ProjectForm';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
+import Following from './pages/Following';
 
 
 // Secure Route Gate for logged in users
@@ -63,6 +66,30 @@ function MainAppLayout() {
                 element={
                   <ProtectedRoute>
                     <ProjectForm isSidebarOpen={isSidebarOpen} />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <Notifications />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/following"
+                element={
+                  <ProtectedRoute>
+                    <Following />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
                   </ProtectedRoute>
                 }
               />
