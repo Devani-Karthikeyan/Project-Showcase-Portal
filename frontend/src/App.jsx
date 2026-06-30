@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar';
 // Pages
 import Explore from './pages/Explore';
 import Login from './pages/Login';
+import Bookmarks from './pages/Bookmarks';
 import ProjectDetails from './pages/ProjectDetails';
 import ProjectForm from './pages/ProjectForm';
 import Settings from './pages/Settings';
@@ -69,6 +70,15 @@ function MainAppLayout() {
                   </ProtectedRoute>
                 }
               />
+                 <Route
+                path="/bookmarks"
+                element={
+                  <ProtectedRoute>
+                    <Bookmarks />
+                  </ProtectedRoute>
+                }
+              />
+
                <Route
                 path="/notifications"
                 element={
