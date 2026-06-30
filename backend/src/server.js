@@ -12,6 +12,7 @@ import { initializeEventHandlers } from './services/notificationService.js';
 // Route imports
 import authRoutes from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
 
 
 
@@ -55,6 +56,7 @@ app.use('/uploads', express.static(uploadsFolder));
 
 // Route bindings
 app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint
