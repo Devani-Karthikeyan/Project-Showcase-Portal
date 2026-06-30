@@ -8,8 +8,26 @@ import Sidebar from './components/Sidebar';
 
 // Pages
 import Explore from './pages/Explore';
+import Login from './pages/Login';
 import ProjectDetails from './pages/ProjectDetails';
 import ProjectForm from './pages/ProjectForm';
+
+
+// Secure Route Gate for logged in users
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-32 bg-behance-gray-bg">
+        <div className="w-10 h-10 border-4 border-slate-200 border-t-brand-blue rounded-full animate-spin"></div>
+        <span className="text-slate-400 text-xs mt-4">Validating session...</span>
+      </div>
+    );
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
 
 function MainAppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
