@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
 // Pages
+import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import Login from './pages/Login';
 import Bookmarks from './pages/Bookmarks';
@@ -15,7 +16,7 @@ import ProjectForm from './pages/ProjectForm';
 import Settings from './pages/Settings';
 import Notifications from './pages/Notifications';
 import Following from './pages/Following';
-
+import Home from './pages/Home';
 
 // Secure Route Gate for logged in users
 function ProtectedRoute({ children }) {
@@ -70,6 +71,15 @@ function MainAppLayout() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
                  <Route
                 path="/bookmarks"
                 element={
@@ -120,7 +130,12 @@ export default function App() {
       <NotificationProvider>
         <Router>
           <Routes>
+            {/* Public Landing Page */}
+            <Route path="/" element={<Home />} />
             
+            {/* Dedicated Login Page (No Navbar / Sidebar) */}
+            <Route path="/login" element={<Home />} />
+
             {/* The rest of the app */}
             <Route path="/*" element={<MainAppLayout />} />
           </Routes>
