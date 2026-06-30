@@ -15,7 +15,7 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
 import metadataRoutes from './routes/metadataRoutes.js';
-
+import adminRoutes from './routes/adminRoutes.js';
 
 // Setup environment variables
 dotenv.config();
@@ -61,6 +61,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/metadata', metadataRoutes);
+app.use('/api/admin', adminRoutes);
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date() });
