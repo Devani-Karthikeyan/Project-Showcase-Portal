@@ -68,3 +68,97 @@ async function createAndSendNotification({ recipientId, senderId, type, projectI
   }
 }
 
+/**
+ * Initializes subscribers to the EventBus.
+ */
+export function initializeEventHandlers() {
+  console.log('⚡ Event Handlers initializing...');
+
+  // 1. PROJECT_CREATED -> Notify Lecturers in same department
+  eventBus.on(EVENTS.PROJECT_CREATED, async ({ project, student }) => {
+    try {
+      // Find lecturers who can approve this project (same department / faculty)
+      const lecturers = await User.find({
+        role: 'lecturer',
+        department: student.department
+      });
+
+      for (const lecturer of lecturers) {
+        await createAndSendNotification({
+          recipientId: lecturer._id,
+          senderId: student._id,
+          type: 'project_created',
+          projectId: project._id,
+          message: `${student.name} submitted a new project "${project.title}" for approval.`
+        });
+      }
+    } catch (err) {
+      console.error('Error handling PROJECT_CREATED event:', err);
+    }
+  });
+
+  // 2. PROJECT_LIKED -> Notify Student
+  eventBus.on(EVENTS.PROJECT_LIKED, async ({ project, liker }) => {
+    try {
+      // Don't notify if liking own project (though recruiters are likes-only)
+      if (project.studentId.toString() === liker._id.toString()) return;
+
+      await createAndSendNotification({
+        recipientId: project.studentId,
+        senderId: liker._id,
+        type: 'project_liked',
+        projectId: project._id,
+        message: `${liker.name} liked your project "${project.title}".`
+      });
+    } catch (err) {
+      console.error('Error handling PROJECT_LIKED event:', err);
+    }
+  });
+
+  // 3. PROJECT_APPROVED -> Notify Student
+  eventBus.on(EVENTS.PROJECT_APPROVED, async ({ project, reviewer }) => {
+    try {
+      await createAndSendNotification({
+        recipientId: project.studentId,
+        senderId: reviewer._id,
+        type: 'project_approved',
+        projectId: project._id,
+        message: `Your project "${project.title}" has been approved by ${reviewer.name} and is now publicly visible.`
+      });
+    } catch (err) {
+      console.error('Error handling PROJECT_APPROVED event:', err);
+    }
+  });
+
+  // 4. FEEDBACK_ADDED -> Notify Student
+  eventBus.on(EVENTS.FEEDBACK_ADDED, async ({ project, lecturer, feedback }) => {
+    try {
+      await createAndSendNotification({
+        recipientId: project.studentId,
+        senderId: lecturer._id,
+        type: 'feedback_added',
+        projectId: project._id,
+        message: feedback.comment
+      });
+    } catch (err) {
+      console.error('Error handling FEEDBACK_ADDED event:', err);
+    }
+  });
+
+  // 5. USER_FOLLOWED -> Notify Student
+  eventBus.on(EVENTS.USER_FOLLOWED, async ({ follower, followed }) => {
+    try {
+      await createAndSendNotification({
+        recipientId: followed._id,
+        senderId: follower._id,
+        type: 'user_followed',
+        message: `${follower.name} started following you.`
+      });
+    } catch (err) {
+      console.error('Error handling USER_FOLLOWED event:', err);
+    }
+  });
+
+  console.log('⚡ Event Handlers listening.');
+}
+export default initializeEventHandlers;
