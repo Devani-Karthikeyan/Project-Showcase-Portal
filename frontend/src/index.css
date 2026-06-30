@@ -1,3 +1,346 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+:root {
+  /* Light Mode - Slate Premium Theme */
+  --bg-main: #f8fafc;        /* slate-50 */
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;      /* slate-100 */
+  --border-subtle: #f1f5f9;  /* slate-100 */
+  --border-main: #e2e8f0;    /* slate-200 */
+  --border-strong: #cbd5e1;  /* slate-300 */
+  
+  --text-main: #0f172a;      /* slate-900 */
+  --text-title: #1e293b;     /* slate-800 */
+  --text-body: #334155;      /* slate-700 */
+  --text-muted: #64748b;     /* slate-500 */
+  --text-muted-light: #94a3b8; /* slate-400 */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  /* Dark Mode - Premium Navy & Deep Blue Theme */
+  --bg-main: #0b1329;        /* Rich Deep Navy */
+  --bg-card: #1c2541;        /* Cool Navy Slate Card */
+  --bg-subtle: #111a35;      /* Dark Navy Subtle Panel */
+  --border-subtle: #243256;  /* Sleek slate blue borders */
+  --border-main: #334575;    /* Medium slate blue borders */
+  --border-strong: #4a5f97;  /* High contrast borders */
+  
+  --text-main: #f8fafc;      /* slate-50 */
+  --text-title: #f1f5f9;     /* slate-100 */
+  --text-body: #cbd5e1;      /* slate-300 */
+  --text-muted: #94a3b8;     /* slate-400 */
+  --text-muted-light: #64748b; /* slate-500 */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.6);
+}
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  
+  --color-brand-blue: #0057ff;
+  --color-brand-blue-hover: #004be5;
+  --color-behance-black: #191919;
+  
+  --color-behance-gray-bg: var(--bg-main);
+  --color-behance-border: var(--border-main);
+  --color-behance-text-main: var(--text-main);
+  --color-behance-text-muted: var(--text-muted);
+}
+
+/* Reset and Layout Base */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* Global Font Size Bump for Improved Readability */
+.text-\[7px\], .text-\[8px\] { font-size: 10px !important; }
+.text-\[9px\] { font-size: 11px !important; }
+.text-\[10px\] { font-size: 12px !important; }
+.text-\[11px\] { font-size: 13px !important; }
+.text-xs { font-size: 14px !important; }
+.text-sm { font-size: 15.5px !important; }
+.text-base { font-size: 17px !important; }
+.text-lg { font-size: 19px !important; }
+.text-xl { font-size: 22px !important; }
+.text-2xl { font-size: 26px !important; }
+.text-3xl { font-size: 32px !important; }
+
+/* Automatic Light/Dark mode adaptations for Tailwind Utilities */
+.bg-white {
+  background-color: var(--bg-card) !important;
+}
+.bg-slate-50 {
+  background-color: var(--bg-subtle) !important;
+}
+.bg-behance-gray-bg {
+  background-color: var(--bg-main) !important;
+}
+
+.border-slate-100 {
+  border-color: var(--border-subtle) !important;
+}
+.border-slate-200 {
+  border-color: var(--border-main) !important;
+}
+.border-slate-300 {
+  border-color: var(--border-strong) !important;
+}
+
+.text-slate-950, .text-slate-900 {
+  color: var(--text-main) !important;
+}
+.text-slate-800 {
+  color: var(--text-title) !important;
+}
+.text-slate-700, .text-slate-650, .text-slate-600 {
+  color: var(--text-body) !important;
+}
+.text-slate-500 {
+  color: var(--text-muted) !important;
+}
+.text-slate-400 {
+  color: var(--text-muted-light) !important;
+}
+
+/* Dark Mode Link & Navigation Hover Overlay Adaptations (Premium Light Blue Overlay) */
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-100:hover,
+.dark .hover\:bg-slate-200:hover,
+.dark .hover\:bg-slate-300:hover,
+.dark .hover\:bg-blue-50:hover,
+.dark .hover\:bg-indigo-50:hover,
+.dark .hover\:bg-slate-50\/30:hover,
+.dark .hover\:bg-indigo-50\/30:hover,
+.dark .hover\:bg-slate-50\/50:hover {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Fix active menu background highlights in dark mode */
+.dark .bg-blue-50 {
+  background-color: rgba(0, 87, 255, 0.15) !important;
+}
+.dark .bg-indigo-50 {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Behance Specific Layout panels */
+.behance-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-main);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.behance-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.behance-sidebar {
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-main);
+  height: calc(100vh - 69px);
+  position: sticky;
+  top: 69px;
+}
+
+/* Rounded pills matching Behance details */
+.tag-pill {
+  background-color: var(--bg-subtle);
+  color: var(--text-body);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-main);
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark Mode Specific Component Overrides */
+
+/* 1. Floating Back Buttons (Translucent Light Blue Glow) */
+.dark .absolute.top-5.left-5.rounded-full.bg-white\/80 {
+  background-color: rgba(59, 130, 246, 0.18) !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  color: #f8fafc !important;
+}
+.dark .absolute.top-5.left-5.rounded-full.bg-white\/80:hover {
+  background-color: rgba(59, 130, 246, 0.3) !important;
+  color: #60a5fa !important;
+}
+
+/* 2. Settings Danger Zone Blocks (Translucent Light Blue Glow) */
+.dark .bg-orange-50\/50.border-orange-100,
+.dark .bg-rose-50\/50.border-rose-100 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+.dark .bg-orange-50\/50.border-orange-100 .text-slate-600,
+.dark .bg-rose-50\/50.border-rose-100 .text-rose-600 {
+  color: var(--text-body) !important;
+}
+
+/* 3. Settings Danger Zone Inner Confirmation Box */
+.dark .bg-white\/80.border-rose-100 {
+  background-color: var(--bg-subtle) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* 4. Settings Appearance Page Theme Cards */
+.dark .bg-indigo-50\/30 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: var(--color-brand-blue) !important;
+}
+
+/* 5. Create Collection Modal Visibility Types (Private/Public Selection) */
+.dark .bg-indigo-50\/50 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: var(--color-brand-blue) !important;
+}
+
+/* 6. Explore Card Category Badge & Bookmark Button overlays */
+.dark .bg-white\/95 {
+  background-color: rgba(11, 19, 41, 0.85) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+  color: #60a5fa !important;
+}
+.dark .bg-white\/95.text-brand-blue {
+  color: #60a5fa !important;
+}
+.dark .bg-white\/95.text-brand-blue:hover {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  color: #93c5fd !important;
+}
+
+/* 7. Secondary / Cancel / Draft Outline Buttons */
+.dark .bg-white.text-slate-700.border-slate-200,
+.dark .text-slate-700.border-slate-200 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+  color: #60a5fa !important;
+}
+.dark .bg-white.text-slate-700.border-slate-200:hover,
+.dark .text-slate-700.border-slate-200:hover {
+  background-color: rgba(59, 130, 246, 0.18) !important;
+  color: #93c5fd !important;
+}
+
+/* 8. Create Project Form and Create Collection Containers (Translucent Light Blue backgrounds) */
+
+/* Page background for create project form */
+.dark .min-h-screen.bg-slate-50\/50 {
+  background-color: rgba(59, 130, 246, 0.04) !important;
+}
+
+/* Sticky top header bar and fixed bottom footer bar on create project page */
+.dark .bg-white.sticky.top-0,
+.dark .fixed.bottom-0.bg-white {
+  background-color: rgba(11, 19, 41, 0.95) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Create Collection modal footer container background */
+.dark .px-8.py-5.border-t.bg-slate-50\/50 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* 9. Home Page Specific Overrides (Translucent Light Blue / Soft Glow Dots) */
+.dark .bg-\[\#fafbfc\] {
+  background-color: rgba(59, 130, 246, 0.03) !important;
+}
+
+/* Transform background dots from gray to translucent light blue in dark mode */
+.dark div[style*="radial-gradient(#cbd5e1"] {
+  background-image: radial-gradient(rgba(59, 130, 246, 0.25) 1px, transparent 1px) !important;
+}
+
+/* 10. Empty State / No Submissions Containers (Translucent Light Blue Glow) */
+.dark .border-dashed.border-slate-200.bg-slate-50\/50,
+.dark .border-dashed.border-slate-200.bg-slate-50\/30 {
+  background-color: rgba(59, 130, 246, 0.05) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+/* 11. Notification Panel Header (Light Blue Glow in Dark Mode) */
+.dark .notif-popup-header {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-bottom-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* 12. Review Highlight Scroll Glow Animation */
+@keyframes reviewGlow {
+  0% {
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.45);
+    border-color: rgba(59, 130, 246, 0.5) !important;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+.highlight-review-glow {
+  animation: reviewGlow 3s ease-out forwards;
+  background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+.dark .highlight-review-glow {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* 13. Feedback comment box styling in Dark Mode */
+.dark .feedback-comment-box {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  border-color: rgba(59, 130, 246, 0.45) !important;
+  color: #93c5fd !important;
+}
+
+
