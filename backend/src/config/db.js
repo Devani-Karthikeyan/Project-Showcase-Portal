@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import seedDatabase from './seed.js';
 
 export async function connectDB() {
   const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/student_showcase';
@@ -11,7 +12,7 @@ export async function connectDB() {
       serverSelectionTimeoutMS: 5000 
     });
     console.log(`📡 MongoDB Connected: ${mongoose.connection.host}`);
-    
+    await seedDatabase();
   } catch (err) {
     console.error('❌ MongoDB Connection Error:', err.message);
     console.log('⚠️ Falling back: Attempting to start In-Memory MongoDB Server...');
@@ -24,7 +25,7 @@ export async function connectDB() {
       console.log('⚙️ In-Memory MongoDB Server running at:', fallbackUri);
       await mongoose.connect(fallbackUri);
       console.log('📡 Connected to Fallback In-Memory MongoDB.');
-      
+      await seedDatabase();
     } catch (fallbackErr) {
       console.error('❌ Fallback connection failed:', fallbackErr.message);
       console.error('🚨 Please make sure MongoDB is running or specify MONGODB_URI in your .env file.');
