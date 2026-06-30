@@ -36,6 +36,13 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, postman, curl)
     if (!origin) return callback(null, true);
+
+    // Allow configured frontend URL
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (frontendUrl && (origin === frontendUrl || origin === frontendUrl.replace(/\/$/, ''))) {
+      return callback(null, true);
+    }
+
     // Allow localhost connections from any port
     if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
       return callback(null, true);
