@@ -1,14 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
 const AuthContext = createContext(null);
-
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-
+export const BACKEND_URL = 'http://localhost:5000';
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://lavish-determination-production-f642.up.railway.app';
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   // Validate existing session on startup
   useEffect(() => {
     async function loadUser() {
@@ -17,7 +14,6 @@ export function AuthProvider({ children }) {
         setLoading(false);
         return;
       }
-
       try {
         const res = await fetch(`${BACKEND_URL}/api/auth/me`, {
           headers: {
@@ -39,14 +35,11 @@ export function AuthProvider({ children }) {
         setLoading(false);
       }
     }
-
     loadUser();
   }, []);
-
   const [currentTheme, setCurrentTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
   });
-
   // Sync currentTheme when user logs in/out or settings change
   useEffect(() => {
     if (user?.settings?.appearance?.theme) {
@@ -54,11 +47,9 @@ export function AuthProvider({ children }) {
       localStorage.setItem('theme', user.settings.appearance.theme);
     }
   }, [user?.settings?.appearance?.theme]);
-
   // Handle theme application
   useEffect(() => {
     const root = document.documentElement;
-
     const applyTheme = (t) => {
       if (t === 'dark') {
         root.classList.add('dark');
@@ -73,9 +64,7 @@ export function AuthProvider({ children }) {
         }
       }
     };
-
     applyTheme(currentTheme);
-
     if (currentTheme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       const handleChange = () => applyTheme('system');
@@ -89,12 +78,10 @@ export function AuthProvider({ children }) {
       }
     }
   }, [currentTheme]);
-
   async function toggleTheme() {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setCurrentTheme(nextTheme);
     localStorage.setItem('theme', nextTheme);
-
     if (user) {
       try {
         const token = localStorage.getItem('token');
@@ -129,7 +116,6 @@ export function AuthProvider({ children }) {
       }
     }
   }
-
   /**
    * Log in as a simulated Google account with custom role details
    */
@@ -142,12 +128,10 @@ export function AuthProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...payload, isRegister }) // Payload: email, name, role, department, faculty, graduationYear, isRegister
       });
-
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Authentication failed');
       }
-
       localStorage.setItem('token', data.token);
       setUser(data.user);
       return data.user;
@@ -158,7 +142,6 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   }
-
   /**
    * Google OAuth login handler (accepts OAuth credentials from Google GSI library)
    */
@@ -171,12 +154,10 @@ export function AuthProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential, isRegister })
       });
-
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'OAuth authentication failed');
       }
-
       localStorage.setItem('token', data.token);
       setUser(data.user);
       return data.user;
@@ -187,7 +168,6 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   }
-
   /**
    * Log out session
    */
@@ -195,7 +175,6 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token');
     setUser(null);
   }
-
   const value = {
     user,
     loading,
@@ -208,10 +187,8 @@ export function AuthProvider({ children }) {
     currentTheme,
     toggleTheme
   };
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
