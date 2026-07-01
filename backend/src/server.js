@@ -31,25 +31,41 @@ initializeEventHandlers();
 
 const app = express();
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.VITE_FRONTEND_URL,
+  'https://project-showcase-portal-nine.vercel.app',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+].filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+
+  const normalizedOrigin = origin.replace(/\/$/, '');
+  if (allowedOrigins.includes(normalizedOrigin)) return true;
+
+  return /^(https?:\/\/)(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+    || /^https:\/\/[-a-z0-9]+\.vercel\.app$/i.test(origin)
+    || /^https:\/\/[-a-z0-9]+\.netlify\.app$/i.test(origin)
+    || /^https:\/\/[-a-z0-9]+\.railway\.app$/i.test(origin)
+    || /^https:\/\/[-a-z0-9]+\.render\.com$/i.test(origin);
+};
+
 // Express Middlewares
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, postman, curl)
-    if (!origin) return callback(null, true);
-
-    // Allow configured frontend URL
-    const frontendUrl = process.env.FRONTEND_URL;
-    if (frontendUrl && (origin === frontendUrl || origin === frontendUrl.replace(/\/$/, ''))) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
 
-    // Allow localhost connections from any port
-    if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
-      return callback(null, true);
-    }
     return callback(new Error('Not allowed by CORS policy'), false);
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Set limits high enough to receive base64 representations of images

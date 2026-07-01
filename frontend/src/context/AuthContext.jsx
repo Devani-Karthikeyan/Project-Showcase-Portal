@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext(null);
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://lavish-determination-production-f642.up.railway.app';
+export const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || (import.meta.env.DEV ? 'http://localhost:5000' : '')).replace(/\/$/, '');
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
